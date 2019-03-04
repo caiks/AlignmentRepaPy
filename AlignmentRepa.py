@@ -5,7 +5,7 @@ import scipy.special as sp
 AlignmentForeignPy_ok = True
 try:
     from AlignmentForeignPy import *
-except ModuleNotFoundError:
+except ImportError:
     AlignmentForeignPy_ok = False
 
 # data HistogramRepa = HistogramRepa {
