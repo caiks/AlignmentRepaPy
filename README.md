@@ -38,11 +38,11 @@ sudo python3 setup.py install
 ```
 In Windows the `AlignmentForeignPy` module must be built explicitly. For example,
 ```sh
-cd /d ..\AlignmentRepaPy
+cd /d AlignmentRepaPy
 cl.exe -Dinline=__inline /LD /I "." /I "C:\Program Files (x86)\Python\Python37-32\include" /I "C:\Program Files (x86)\Python\Python37-32\Lib\site-packages\numpy\core\include" AlignmentForeignPy.c "C:\Program Files (x86)\Python\Python37-32\libs\python37.lib"
 move /Y AlignmentForeignPy.dll  AlignmentForeignPy.pyd
 ```
-Note that if the `AlignmentForeignPy` module fails to build, the `AlignmentRepa` module will still run in pure NumPy python. The success of the `AlignmentForeignPy` module import can be checked at runtime,
+Note that if the `AlignmentForeignPy` module fails to build, the `AlignmentRepa` module will still run in pure NumPy Python, albeit more slowly. The success of the `AlignmentForeignPy` module import can be checked at runtime,
 ```py
 AlignmentForeignPy_ok
 # True
