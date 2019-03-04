@@ -16,7 +16,7 @@ except ImportError:
 # histogramRepaEmpty :: HistogramRepa
 
 def histogramRepaEmpty():
-    return ([],sdict(), np.empty(0))
+    return ([],sdict(), np.empty(0,dtype=np.dtype(np.float64)))
 
 # histogramRepasVectorVar :: HistogramRepa -> V.Vector Variable
 
@@ -57,7 +57,7 @@ def systemsHistogramsHistogramRepa(uu,aa):
         mvv = sdict([(v,i) for (i,v) in enumerate(vv)])
         mm = sdict([(v,sdict([(w,i) for (i,w) in enumerate(uvals(uu,v))])) for v in vv])
         sh = tuple([len(mm[v]) for v in vv])
-        rr = np.zeros(sh,dtype=float)
+        rr = np.zeros(sh,dtype=np.dtype(np.float64))
         for (ss,c) in aall(aa):
             rr[tuple([mm[v][sat(ss,v)] for v in vv])] = float(c)
         return (vv,mvv,rr)
@@ -388,7 +388,7 @@ def histogramRepasRed_u(z,ar):
 def histogramRepaRedsIndependent(z,arr):
     (vvv,mvv,svv,lrr) = arr
     if len(vvv) == 0:
-        return ([],sdict(),np.array(z))
+        return ([],sdict(),np.array(z,dtype=np.dtype(np.float64)))
     rr = lrr[0]
     for i in range(1,len(vvv)):
         rr = np.multiply.outer(rr,lrr[i])
@@ -443,7 +443,7 @@ def histogramRepa4VecsRed_u(vhr):
 # historyRepaEmpty :: HistoryRepa
 
 def historyRepaEmpty():
-    return ([],sdict(),tuple(),np.empty((0,0)))
+    return ([],sdict(),tuple(),np.empty((0,0),dtype=np.dtype(np.int32)))
 
 # historyRepasVectorVar :: HistoryRepa -> V.Vector Variable
 
@@ -484,7 +484,7 @@ def systemsHistoriesHistoryRepa(uu,hh):
         sh = tuple([len(mm[v]) for v in vv])
         sh1 =(len(hh),len(vv))
         nn = [mm[v][u] for (_,ss) in hhll(hh) for (v,u) in ssll(ss)]
-        rr = np.transpose(np.reshape(np.array(nn),sh1))
+        rr = np.transpose(np.reshape(np.array(nn,dtype=np.dtype(np.int32)),sh1))
         return (vv,mvv,sh,rr)
     return None
 
@@ -567,12 +567,12 @@ def setVarsHistoryRepasReduce(f,kk,hr):
     vkk = list(kk & vv)
     m = len(vkk)
     if m == 0:
-        return ([],sdict(),np.array(z))
+        return ([],sdict(),np.array(z,dtype=np.dtype(np.float64)))
     mkk = sdict([(v,i) for (i,v) in enumerate(vkk)])
     pkk = [mvv[v] for v in vkk]
     skk = tuple([svv[i] for i in pkk])
     rr1 = np.zeros(skk,dtype=np.dtype(np.float64))
-    listVarsArrayHistoriesReduce_u_py(f,m,np.array(pkk),np.array(skk),z,rr,rr1)
+    listVarsArrayHistoriesReduce_u_py(f,m,np.array(pkk,dtype=np.dtype(np.int32)),np.array(skk,dtype=np.dtype(np.int32)),z,rr,rr1)
     return (vkk,mkk,rr1)
 
 # setVarsHistoryRepasReduce_1 :: Double -> Set.Set Variable -> HistoryRepa -> HistogramRepa 
@@ -583,11 +583,11 @@ def setVarsHistoryRepasReduce_1(f,kk,hr):
     (_,z) = rr.shape
     vkk = list(kk & vv)
     if len(vkk) == 0:
-        return ([],sdict(),np.array(z))
+        return ([],sdict(),np.array(z,dtype=np.dtype(np.float64)))
     mkk = sdict([(v,i) for (i,v) in enumerate(vkk)])
     pkk = [mvv[v] for v in vkk]
     skk = tuple([svv[i] for i in pkk])
-    rr1 = np.zeros(skk,dtype=float)
+    rr1 = np.zeros(skk,dtype=np.dtype(np.float64))
     rrt = np.transpose(rr)
     for j in range(0,z):
         rr1[tuple(rrt[j][pkk])] += f
@@ -601,11 +601,11 @@ def setVarsHistoryRepasReduce_2(f,kk,hr):
     (_,z) = rr.shape
     vkk = list(kk & vv)
     if len(vkk) == 0:
-        return ([],sdict(),np.array(z))
+        return ([],sdict(),np.array(z,dtype=np.dtype(np.float64)))
     mkk = sdict([(v,i) for (i,v) in enumerate(vkk)])
     pkk = [mvv[v] for v in vkk]
     skk = tuple([svv[i] for i in pkk])
-    rr1 = np.zeros(skk,dtype=float)
+    rr1 = np.zeros(skk,dtype=np.dtype(np.float64))
     rrkr = np.transpose(rr[pkk])
     for j in range(0,z):
         rr1[tuple(rrkr[j])] += f
@@ -620,11 +620,11 @@ def setVarsHistoryRepasReduce_3(f,kk,hr):
     vkk = list(kk & vv)
     m = len(vkk)
     if m == 0:
-        return ([],sdict(),np.array(z))
+        return ([],sdict(),np.array(z,dtype=np.dtype(np.float64)))
     mkk = sdict([(v,i) for (i,v) in enumerate(vkk)])
     pkk = [mvv[v] for v in vkk]
     skk = tuple([svv[i] for i in pkk])
-    rr1 = np.zeros(tuple(list(skk)+[z]),dtype=float)
+    rr1 = np.zeros(tuple(list(skk)+[z]),dtype=np.dtype(np.float64))
     rrkr = np.concatenate([rr[pkk],np.reshape(np.arange(z),(1,z))])
     rr1[tuple([rrkr[i] for i in range(m+1)])] = f
     return (vkk,mkk,np.sum(rr1,axis=-1))
@@ -639,7 +639,7 @@ def historyRepasRed(hr):
     (vvv,mvv,svv,rr) = hr
     (n,z) = rr.shape
     f = 1.0 / z
-    lrr = [np.zeros(i,dtype=float) for i in svv]
+    lrr = [np.zeros(i,dtype=np.dtype(np.float64)) for i in svv]
     for i in range(0,n):
         for w in np.nditer(rr[i]):
             lrr[i][w] += f
@@ -658,7 +658,7 @@ def setVarsHistoryRepasRed(kk,hr):
     pkk = [mvv[v] for v in vkk]
     skk = tuple([svv[i] for i in pkk])
     f = 1.0 / z
-    lrr = [np.zeros(i,dtype=float) for i in skk]
+    lrr = [np.zeros(i,dtype=np.dtype(np.float64)) for i in skk]
     for (i,j) in enumerate(pkk):
         for w in np.nditer(rr[j]):
             lrr[i][w] += f
@@ -772,7 +772,7 @@ def systemsTransformsTransformRepa_u(uu,tt):
     mm = sdict([(v,sdict([(w,i) for (i,w) in enumerate(uvals(uu,v))])) for v in vv + [w]])
     sh = tuple([len(mm[v]) for v in vv])
     d = len(mm[w])
-    rr = np.empty(sh,dtype=int)
+    rr = np.empty(sh,dtype=np.dtype(np.int32))
     for (ss,_) in aall(ttaa(tt)):
         rr[tuple([mm[v][sat(ss,v)] for v in vv])] = mm[w][sat(ss,w)]
     return (vv,mvv,w,d,rr)
@@ -784,7 +784,7 @@ def historyRepasTransformRepasApply_u(hr,tr):
     (vtt,_,w,d,rtt) = tr
     (_,z) = raa.shape
     pkk = [maa[v] for v in vtt]
-    rbb = np.empty(z,dtype=int)
+    rbb = np.empty(z,dtype=np.dtype(np.int32))
     rat = np.transpose(raa)
     for j in range(0,z):
         rbb[j] = rtt[tuple(rat[j][pkk])]
@@ -796,7 +796,7 @@ def historyRepasListTransformRepasApply_u(hr,fr):
     (vaa,maa,saa,raa) = hr
     (n,z) = raa.shape
     m = len(fr)
-    rbt = np.transpose(np.append(raa,np.empty((m,z),dtype=int),axis=0))
+    rbt = np.transpose(np.append(raa,np.empty((m,z),dtype=np.dtype(np.int32)),axis=0))
     vbb = vaa
     sbb = list(saa)
     mbb = maa.copy()
@@ -868,8 +868,8 @@ def parametersSetVarsHistoryRepasSetSetVarsAlignedTop_u(xmax,omax,ww,hh,hhx,hhrr
     vww = list(ww)
     m = len(vww)
     pww = [mvv[v] for v in vww]
-    psvv = np.array(svv)
-    ppww = np.array(pww)
+    psvv = np.array(svv,dtype=np.dtype(np.int32))
+    ppww = np.array(pww,dtype=np.dtype(np.int32))
     pxx1 = np.concatenate(lxx1)
     pxx2 = np.concatenate(lxx2)
     tww1 = np.zeros((omax),dtype=np.dtype(np.int32))
@@ -911,9 +911,9 @@ def parametersSetVarsSetSetVarsHistoryRepasSetSetVarsAlignedTop_u(xmax,omax,ww,v
     e = len(vdd[0])
     pww = [mvv[v] for v in vww]
     pdd = [mvv[v] for qq in vdd for v in qq]
-    psvv = np.array(svv)
-    ppww = np.array(pww)
-    ppdd = np.array(pdd)
+    psvv = np.array(svv,dtype=np.dtype(np.int32))
+    ppww = np.array(pww,dtype=np.dtype(np.int32))
+    ppdd = np.array(pdd,dtype=np.dtype(np.int32))
     pxx1 = np.concatenate(lxx1)
     pxx2 = np.concatenate(lxx2)
     tww1 = np.zeros((omax),dtype=np.dtype(np.int32))
@@ -961,11 +961,11 @@ def parametersSetVarsSetSetVarsHistoryRepasSetSetVarsAlignedExcludeHiddenDenseTo
     e = len(vdd[0])
     pww = [mvv[v] for v in vww]
     pdd = [mvv[v] for qq in vdd for v in qq]
-    psvv = np.array(svv)
+    psvv = np.array(svv,dtype=np.dtype(np.int32))
     ppccd = np.array(pccd,dtype=np.dtype(np.int32))
     ppccu = np.array(pccu,dtype=np.dtype(np.int32))
-    ppww = np.array(pww)
-    ppdd = np.array(pdd)
+    ppww = np.array(pww,dtype=np.dtype(np.int32))
+    ppdd = np.array(pdd,dtype=np.dtype(np.int32))
     pxx1 = np.concatenate(lxx1)
     pxx2 = np.concatenate(lxx2)
     tww1 = np.zeros((omax),dtype=np.dtype(np.int32))
