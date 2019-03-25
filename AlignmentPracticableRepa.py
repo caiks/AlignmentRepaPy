@@ -817,3 +817,97 @@ def parametersBuilderConditionalVarsRepa(kmax,omax,qmax,ll,aa):
     vvk = vars(aa) - ll
     rr = bot(omax,sdict([(sgl(w),ent(red(aa,ll|sgl(w)))-ent(red(aa,sgl(w)))) for w in vvk]))
     return bot(qmax,buildc(rr,rr))
+
+# parametersSystemsHistoryRepasDecomperConditionalFmaxRepa :: 
+#   Integer -> Integer -> Integer -> System -> Set.Set Variable -> HistoryRepa -> 
+#   Maybe (System, DecompFud)
+
+def parametersSystemsHistoryRepasDecomperConditionalFmaxRepa(kmax,omax,fmax,uu,ll,aa):
+    rounding = 1e-14
+    dom = relationsDomain
+    def tsgl(r):
+        return sdict([(r,sdict())])
+    uunion = pairSystemsUnion
+    cart = systemsSetVarsSetStateCartesian_u
+    llss = listsState
+    sunion = pairStatesUnionLeft
+    trim = histogramsTrim
+    aall = histogramsList
+    def red(aa,vv):
+        return setVarsHistogramsReduce(vv,aa)
+    unit = setStatesHistogramUnit
+    mul = pairHistogramsMultiply
+    ent = histogramsEntropy
+    aahh = histogramsHistory
+    hhhr = systemsHistoriesHistoryRepa
+    def vars(hr):
+        return sset(historyRepasVectorVar(hr))
+    rraa = systemsHistogramRepasHistogram
+    def hrhrred(hr,vv):
+        return setVarsHistoryRepasHistoryRepaReduced(vv,hr)
+    def hrred(hr,vv):
+        return setVarsHistoryRepasReduce(1,vv,hr)
+    def reduce(uu,ww,hh):
+        return rraa(uu,hrred(hh,ww))
+    def select(uu,ss,hh):
+        return historyRepasHistoryRepasHistoryRepaSelection_u(hhhr(uu,aahh(unit(sset([ss])))),hh)
+    trans = histogramsSetVarsTransform_u
+    tttr = systemsTransformsTransformRepa_u
+    fsys = fudsSystemImplied
+    qqff = setTransformsFud_u
+    ffqq = fudsSetTransform
+    fder = fudsDerived
+    def apply(uu,ff,hh):
+        return historyRepasListTransformRepasApply(hh,[tttr(uu,tt) for tt in ffqq(ff)])
+    zzdf = treePairStateFudsDecompFud
+    def vvff(uu,vv,f):
+        v = VarPair((VarPair((VarInt(f),VarInt(1))),VarInt(1)))
+        qq = sset([sunion(ss,llss([(v,ValInt(i+1))])) for (i,ss) in enumerate(cart(uu,vv))])
+        return qqff(sset([trans(unit(qq),sset([v]))]))
+    def lenter(ll,aa):
+        return list(parametersBuilderConditionalVarsRepa(kmax,omax,1,ll,aa).items())
+    vv = vars(aa)
+    def decomp(uu,zz,qq,f):
+        if len(zz) == 0:
+            nnr = lenter(ll,aa)
+            if len(nnr) == 0:
+                return (uu, decompFudEmpty())
+            [(kkr,_)] = nnr
+            ffr = vvff(uu,kkr,f)
+            uur = uunion(uu,fsys(ffr))
+            aar = apply(uur,ffr,aa)
+            aa1 = trim(reduce(uur,fder(ffr)|ll,aar))
+            zzr = tsgl((stateEmpty(),ffr))
+            qq[(stateEmpty(),ffr)] = (aar,aa1)
+            (ffr,nnr,kkr) = (None,None,None)
+            return decomp(uur,zzr,qq,f+1)
+        if fmax > 0 and f > fmax:
+            return (uu,zzdf(zz))
+        mm = []
+        for (nn,yy) in treesPlaces(zz):
+            (rr,ff) = nn[-1]
+            (bb,bb1) = qq[(rr,ff)]
+            tt = dom(treesRoots(yy))
+            for (ss,a) in aall(red(bb1,fder(ff))):
+                if a > 0 and ss not in tt:
+                    e = a * ent(red(mul(bb1,unit(sset([ss]))),ll))
+                    if e > rounding:
+                        mm.append((e,(nn,ss,bb)))
+        if len(mm) == 0:
+            return (uu,zzdf(zz))
+        mm.sort(key = lambda x: x[0])
+        (_,(nn,ss,bb)) = mm[-1]
+        cc = hrhrred(select(uu,ss,bb),vv)
+        nnc = lenter(ll,cc)
+        [(kkc,_)] = nnc
+        ffc = vvff(uu,kkc,f)
+        uuc = uunion(uu,fsys(ffc))
+        ccc = apply(uuc,ffc,cc)
+        cc1 = trim(reduce(uuc,fder(ffc)|ll,ccc))
+        qq[(ss,ffc)] = (ccc,cc1)
+        zzc = pathsTree(treesPaths(zz) + [nn+[(ss,ffc)]])
+        (mm,cc,ffc,nnc,kkc) = (None,None,None,None,None)
+        return decomp(uuc,zzc,qq,f+1)
+    if kmax < 0 or omax < 0:
+        return None
+    return decomp(uu,emptyTree(),sdict(),1)
