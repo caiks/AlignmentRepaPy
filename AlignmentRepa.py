@@ -820,6 +820,35 @@ def listVariablesListTransformRepasSort(vv,ff):
         return set(transformRepasVectorVar(tr))
     def und(tr):
         return vars(tr) - der(tr)
+    def next(vv,ff):
+        gg = []
+        finished = False
+        while not finished:
+            found = False
+            for (i,(tt,xx)) in enumerate(ff):
+                if xx.issubset(vv):
+                    found = True
+                    break
+            if found:
+                vv = vv|der(tt)
+                ff = ff[:i]+ff[i+1:]
+                gg.append(tt)
+            else:
+                finished = True
+        return gg
+    vv1 = set(vv)
+    ff1 = [(tt,und(tt)) for tt in ff if not der(tt).issubset(vv1)]
+    return next(vv1,ff1)
+
+# listVariablesListTransformRepasSort_1 :: V.Vector Variable -> V.Vector TransformRepa -> V.Vector TransformRepa 
+
+def listVariablesListTransformRepasSort_1(vv,ff):
+    def der(tr):
+        return set([transformRepasVarDerived(tr)])
+    def vars(tr):
+        return set(transformRepasVectorVar(tr))
+    def und(tr):
+        return vars(tr) - der(tr)
     def next(vv,ff,gg):
         found = False
         for (i,(tt,xx)) in enumerate(ff):
