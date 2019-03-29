@@ -286,7 +286,7 @@ def parametersSystemsHistoryRepasDecomperMaxRollByMExcludedSelfHighestFmaxIORepa
             stdout.flush()
             return (uu,zzdf(zztrim(zz)))
         mm.sort(key = lambda x: x[0])
-        (_,(nn,ss,bb)) = mm[-1]
+        (a,(nn,ss,bb)) = mm[-1]
         cc = hrhrred(select(uu,ss,bb),vars(aa))
         decomper_log.info("decomp path length: %d" % len(nn))
         decomper_log.info("slice size: %d" % a)
