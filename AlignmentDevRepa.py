@@ -1,4 +1,4 @@
-﻿from AlignmentDev import *
+from AlignmentDev import *
 from AlignmentPracticableIORepa import *
 
 aarr = systemsHistogramsHistogramRepa
@@ -18,6 +18,7 @@ def hrred(hr,vv):
 def hrhrred(hr,vv):
     return setVarsHistoryRepasHistoryRepaReduced(vv,hr)
 hrredhr = hrhrred
+hrev = eventsHistoryRepasHistoryRepaSelection
 def hrfmul(uu,ff,hh):
     return systemsFudsHistoryRepasMultiply_u(uu,ff,hh)
 hrvars = historyRepasSetVariable
@@ -26,4 +27,3 @@ def hrlent(uu,hh,ww,vvl):
     return ent(hhaa(hrhh(uu,hrhrred(hh,ww|vvl)))) - ent(hhaa(hrhh(uu,hrhrred(hh,ww))))
 
 summation = systemsDecompFudsHistoryRepasAlignmentContentShuffleSummation_u
-
