@@ -3,6 +3,8 @@ from AlignmentPracticableIORepa import *
 
 aarr = systemsHistogramsHistogramRepa
 rraa = systemsHistogramRepasHistogram
+aaar = systemsHistogramsHistogramRepa
+araa = systemsHistogramRepasHistogram
 def arred(aa,vv):
     return setVarsHistogramRepasReduce(vv,aa)
 
@@ -19,6 +21,8 @@ def hrhrred(hr,vv):
     return setVarsHistoryRepasHistoryRepaReduced(vv,hr)
 hrredhr = hrhrred
 hrev = eventsHistoryRepasHistoryRepaSelection
+def hrhrsel(hr,ss):
+	return historyRepasHistoryRepasHistoryRepaSelection_u(ss,hr)
 def hrfmul(uu,ff,hh):
     return systemsFudsHistoryRepasMultiply_u(uu,ff,hh)
 hrvars = historyRepasSetVariable
