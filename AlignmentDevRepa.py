@@ -19,6 +19,7 @@ def hrred(hr,vv):
     return setVarsHistoryRepasReduce(1,vv,hr)
 def hrhrred(hr,vv):
     return setVarsHistoryRepasHistoryRepaReduced(vv,hr)
+hrmult = systemsDecompFudsHistoryRepasMultiply
 hrredhr = hrhrred
 hrev = eventsHistoryRepasHistoryRepaSelection
 def hrhrsel(hr,ss):
