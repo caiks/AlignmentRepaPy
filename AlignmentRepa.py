@@ -879,6 +879,36 @@ def systemsFudsHistoryRepasMultiply_u(uu,ff,hr):
     gr = [tttr(uu,tt) for tt in ffqq(ff)]
     return ltrmul(hr,gr)
 
+# systemsDecompFudsHistoryRepasMultiply :: System -> DecompFud -> HistoryRepa -> Tree ((State,Fud),HistoryRepa)
+
+def systemsDecompFudsHistoryRepasMultiply(uu,df,aa):
+    def unit(ss):
+        return setStatesHistogramUnit(sset([ss]))
+    fder = fudsDerived
+    aahh = histogramsHistory
+    hhhr = systemsHistoriesHistoryRepa
+    empty = historyRepaEmpty
+    size = historyRepasSize
+    vars = historyRepasSetVariable
+    def select(uu,ss,hh):
+        return historyRepasHistoryRepasHistoryRepaSelection_u(hhhr(uu,aahh(unit(ss))),hh)
+    def red(hr,vv):
+        return setVarsHistoryRepasHistoryRepaReduced(vv,hr)
+    def fmul(uu,ff,hh):
+        return systemsFudsHistoryRepasMultiply_u(uu,ff,hh)
+    def apply(zz,vv,aa):
+        ll = []
+        if size(aa) > 0:
+            for ((ss,ff),yy) in zz.items():
+                aa1 = select(uu,ss,aa)
+                ww = fder(ff)
+                bb = empty()
+                if size(aa1) > 0:
+                    bb = red(fmul(uu,ff,aa1),vv|ww)
+                ll.append((((ss,ff),hlist(bb)),apply(yy,vv,bb)))
+        return sdict(ll)
+    return apply(df,vars(aa),aa)
+
 
 # int listVarsArrayHistoriesAlignedTop_u(
 #     int xmax, int omax, int n, int* svv, int m, int z1, int z2,
