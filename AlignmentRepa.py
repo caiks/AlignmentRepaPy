@@ -6,7 +6,7 @@ AlignmentForeignPy_ok = True
 try:
     from AlignmentForeignPy import *
 except ImportError:
-    AlignmentForeignPy_ok = False
+    AlignmentForeignPy_ok = FalsesystemsDecompFudsHistoryRepasMultiply
 
 # data HistogramRepa = HistogramRepa {
 #   histogramRepasVectorVar :: !(V.Vector Variable),
@@ -909,6 +909,33 @@ def systemsDecompFudsHistoryRepasMultiply(uu,df,aa):
         return sdict(ll)
     return apply(df,vars(aa),aa)
 
+# systemsDecompFudsHistoryRepasDecompFudReduced :: System -> DecompFud -> HistoryRepa -> DecompFud
+
+def systemsDecompFudsHistoryRepasDecompFudReduced(uu,df,aa):
+    fder = fudsDerived
+    def red(ss,v):
+        return setVarsStatesStateFiltered(sset([v]),ss)
+    def fdep(ff,x):
+        return fudsSetVarsDepends(ff,sset([x]))
+    hrsize = historyRepasSize
+    hrmult = systemsDecompFudsHistoryRepasMultiply
+    def apply(w,zz):
+        qq = sdict()
+        for (((ss,ff),hr),yy) in zz.items():
+            u = list(fder(ff))[0]
+            xx = (red(ss,w),fdep(ff,u))
+            a = hrsize(hr)
+            if xx in qq:
+                (b,_) = qq[xx]
+                if a > b:
+                    qq[xx] = (a,apply(u,yy))
+            else:
+                qq[xx] = (a,apply(u,yy))
+        return sdict([(x,yy) for (x,(_,yy)) in qq.items()])
+    (((ss,ff),_),yy) = list(hrmult(uu,df,aa).items())[0]
+    w = list(fder(ff))[0]
+    df1 = sdict([((ss,fdep(ff,w)),apply(w,yy))])
+    return df1
 
 # int listVarsArrayHistoriesAlignedTop_u(
 #     int xmax, int omax, int n, int* svv, int m, int z1, int z2,
