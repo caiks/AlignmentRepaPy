@@ -6,7 +6,7 @@ AlignmentForeignPy_ok = True
 try:
     from AlignmentForeignPy import *
 except ImportError:
-    AlignmentForeignPy_ok = FalsesystemsDecompFudsHistoryRepasMultiply
+    AlignmentForeignPy_ok = False
 
 # data HistogramRepa = HistogramRepa {
 #   histogramRepasVectorVar :: !(V.Vector Variable),
