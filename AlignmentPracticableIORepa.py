@@ -478,8 +478,6 @@ def parametersSystemsLayererLevelMaxRollByMExcludedSelfHighestIORepa_u(wmax,lmax
     stdout.flush()
     return x1
 
-# TBD
-
 # parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxIORepa :: 
 #   Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
 #   Integer -> Integer ->
@@ -503,6 +501,13 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
         return setVarsHistogramsReduce(vv,aa)
     def unit(ss):
         return setStatesHistogramUnit(sset([ss]))
+    qqff = setTransformsFud_u
+    ffqq = fudsSetTransform
+    fvars = fudsVars
+    fder = fudsDerived
+    fund = fudsUnderlying
+    def funion(ff,gg):
+        return qqff(ffqq(ff) | ffqq(gg))
     aahh = histogramsHistory
     hhhr = systemsHistoriesHistoryRepa
     def vars(hr):
@@ -537,7 +542,18 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
             else:
                 pp.append(ll)
         return pathsTree(pp)
-    def layerer(uu,xx,f):
+    def okLevel(zzg):
+        for (wmaxg,vvg,ffg) in treesElements(zzg):
+            if wmaxg < 0:
+                return False
+            if not vvg.issubset(vars(aa)):
+                return False
+            if not fvars(ffg).issubset(uvars(uu)):
+                return False
+            if not fund(ffg).issubset(vars(aa)):
+                return False
+        return True
+    def layerer(wmax,uu,vvg,ffg,xx,f,g):
         decomper_log.info(">>> repa shuffle")
         stdout.flush()
         t1 = timer()
@@ -548,29 +564,39 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
         decomper_log.info(">>> repa perimeters")
         stdout.flush()
         t1 = timer()
-        xxp = hrhx(xx)
-        xxrrp = hrhx(xxrr)
+        xx1 = apply(uu,ffg,xx)
+        xxp = hrhx(xx1)
+        xxrr1 = apply(uu,ffg,xxrr)
+        xxrrp = hrhx(xxrr1)
         t2 = timer()
         decomper_log.info("<<< repa perimeters %.3fs" % (t2-t1))
-        return parametersSystemsLayererMaxRollByMExcludedSelfHighestIORepa_u(wmax,lmax,xmax,omax,bmax,mmax,umax,pmax,uu,vv,xx,xxp,xxrr,xxrrp,f)
+        return parametersSystemsLayererLevelMaxRollByMExcludedSelfHighestIORepa_u(wmax,lmax,xmax,omax,bmax,mmax,umax,pmax,uu,vvg,ffg,xx1,xxp,xxrr1,xxrrp,f,g)
+    def level(uu,aa,ttg,f,g):
+        (uu0,ff0,g0) = (uu,fudEmpty(),g)
+        for ((wmaxg,vvg,ffg),xxg) in ttg.items():
+            (uuh,ffh,gh) = level(uu0,aa,xxg,f,g0)
+            (uu1,gg,nn) = layerer(wmaxg,uuh,vvg,funion(ffg,ffh),aa,f,gh)
+            (a,kk) = maxd(nn)
+            gg1 = fudEmpty()
+            if a > repaRounding:
+                gg1 = depends(gg,kk)
+            (uu0,ff0,g0) = (uu1,funion(ff0,gg1),gh+1)
+        return (uu0,ff0,g0)
     def decomp(uu,zz,qq,f):
         if len(zz) == 0:
-            (uur,ffr,nnr) = layerer(uu,aa,f)
-            if len(ffr) == 0 or len(nnr) == 0:
-                return (uu, decompFudEmpty())
-            (ar,kkr) = maxd(nnr)
-            if ar <= repaRounding:
+            (uur,ffr,_) = level(uu,aa,zzg,f,1)
+            if len(ffr) == 0:
                 return (uu, decompFudEmpty())
             decomper_log.info(">>> slicing")
             stdout.flush()
             t3 = timer()
-            ffr1 = depends(ffr,kkr)
-            decomper_log.info("dependent fud cardinality : %d" % len(ffqq(ffr1)))
-            aar = apply(uur,ffr1,aa)
-            aa1 = trim(reduce(uur,fder(ffr1),aar))
-            decomper_log.info("derived cardinality : %d" % acard(aa1))
-            zzr = tsgl((stateEmpty(),ffr1))
-            qq[(stateEmpty(),ffr1)] = (aar,aa1)
+            decomper_log.info("dependent fud cardinality : %d" % len(ffqq(ffr)))
+            aar = apply(uur,ffr,aa)
+            wwr = fder(ffr)
+            aa1 = trim(reduce(uur,wwr,aar))
+            decomper_log.info("derived cardinality : %d" % acard(red(aa1,wwr)))
+            zzr = tsgl((stateEmpty(),ffr))
+            qq[(stateEmpty(),ffr)] = (aar,aa1)
             (ffr,nnr,kkr) = (None,None,None)
             t4 = timer()
             decomper_log.info("<<< slicing %.3fs" % (t4-t3))
@@ -604,20 +630,17 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
         t2 = timer()
         decomper_log.info("<<< slice selection %.3fs" % (t2-t1))
         stdout.flush()
-        (uuc,ffc,nnc) = layerer(uu,cc,f)
+        (uuc,ffc,_) = level(uu,cc,zzg,f,1)
         decomper_log.info(">>> slicing")
         stdout.flush()
         t3 = timer()
-        (ac,kkc) = maxd(nnc)
-        ffc1 = fudEmpty()
-        if ac > repaRounding:
-             ffc1 = depends(ffc,kkc)
-        decomper_log.info("dependent fud cardinality : %d" % len(ffqq(ffc1)))
-        ccc = apply(uuc,ffc1,cc)
-        cc1 = trim(reduce(uuc,fder(ffc1),ccc))
-        decomper_log.info("derived cardinality : %d" % acard(cc1))
-        qq[(ss,ffc1)] = (ccc,cc1)
-        zzc = pathsTree(treesPaths(zz) + [nn+[(ss,ffc1)]])
+        decomper_log.info("dependent fud cardinality : %d" % len(ffqq(ffc)))
+        wwc = fder(ffc)
+        ccc = apply(uuc,ffc,cc)
+        cc1 = trim(reduce(uuc,wwc,ccc))
+        decomper_log.info("derived cardinality : %d" % acard(red(cc1,wwc)))
+        qq[(ss,ffc)] = (ccc,cc1)
+        zzc = pathsTree(treesPaths(zz) + [nn+[(ss,ffc)]])
         (mm,cc,ffc,nnc,kkc) = (None,None,None,None,None)
         t4 = timer()
         decomper_log.info("<<< slicing %.3fs" % (t4-t3))
@@ -627,7 +650,9 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
         return None
     if size(aa) == 0 or mult < 1:
         return None
-    if not (vars(aa).issubset(uvars(uu)) and vv.issubset(vars(aa))):
+    if not vars(aa).issubset(uvars(uu)):
+        return None
+    if not okLevel(zzg):
         return None
     decomper_log.info(">>> decomper")
     t1 = timer()
