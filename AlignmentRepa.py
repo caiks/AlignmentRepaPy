@@ -822,19 +822,18 @@ def listVariablesListTransformRepasSort(vv,ff):
         return vars(tr) - der(tr)
     def next(vv,ff):
         gg = []
-        finished = False
-        while not finished:
+        found = True
+        while found:
             found = False
-            for (i,(tt,xx)) in enumerate(ff):
+            ff0 = []
+            for (tt,xx) in ff:
                 if xx.issubset(vv):
+                    vv |= der(tt)
+                    gg.append(tt)
                     found = True
-                    break
-            if found:
-                vv = vv|der(tt)
-                ff = ff[:i]+ff[i+1:]
-                gg.append(tt)
-            else:
-                finished = True
+                else:
+                    ff0.append((tt,xx))
+            ff = ff0
         return gg
     vv1 = set(vv)
     ff1 = [(tt,und(tt)) for tt in ff if not der(tt).issubset(vv1)]
@@ -861,6 +860,37 @@ def listVariablesListTransformRepasSort_1(vv,ff):
     vv1 = set(vv)
     ff1 = [(tt,und(tt)) for tt in ff if not der(tt).issubset(vv1)]
     return next(vv1,ff1,[])
+
+# listVariablesListTransformRepasSort_2 :: V.Vector Variable -> V.Vector TransformRepa -> V.Vector TransformRepa 
+
+def listVariablesListTransformRepasSort_2(vv,ff):
+    def der(tr):
+        return set([transformRepasVarDerived(tr)])
+    def vars(tr):
+        return set(transformRepasVectorVar(tr))
+    def und(tr):
+        return vars(tr) - der(tr)
+    def next(vv,ff):
+        gg = []
+        finished = False
+        while not finished:
+            found = False
+            for (i,(tt,xx)) in enumerate(ff):
+                if xx.issubset(vv):
+                    found = True
+                    break
+            if found:
+                vv = vv|der(tt)
+                ff = ff[:i]+ff[i+1:]
+                gg.append(tt)
+            else:
+                finished = True
+        return gg
+    vv1 = set(vv)
+    ff1 = [(tt,und(tt)) for tt in ff if not der(tt).issubset(vv1)]
+    return next(vv1,ff1)
+
+
 
 # historyRepasListTransformRepasApply :: HistoryRepa -> V.Vector TransformRepa -> HistoryRepa 
 
