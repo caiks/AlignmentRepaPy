@@ -1119,7 +1119,7 @@ def parametersSystemsBuilderDerivedVarsLevelHighestNoSumlayerRepa_ui(wmax,omax,u
                 zz.add(w)
                 ff = ff + deps(und(tt),zz)
             return ff
-        return deps(ww,set([w]))
+        return deps(set([w]),set())
     vv1 = fvars(ffg) | vv 
     yy = fvars(ff) - vv1
     if len(yy) == 0:
