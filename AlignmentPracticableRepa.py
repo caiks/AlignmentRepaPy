@@ -25,8 +25,20 @@ def parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui(xmax,omax,bmax,
     append = parametersSetVarsSetSetVarsHistoryRepasSetSetVarsAlignedTop_u
     rrvffv = histogramRepaVecsFaclnsRepaVecs
     rrvsum = histogramRepaVecsSum
-    fder = fudsDerived
-    fvars = fudsVars
+    def fder(ff):
+        und = transformsUnderlying
+        vv = set()
+        for (aa,ww) in ff:
+            vv |= ww
+        for tt in ff:
+            vv -= und(tt)
+        return vv
+    def fvars(ff):
+        vars = histogramsSetVar
+        vv = set()
+        for (aa,ww) in ff:
+            vv |= vars(aa)
+        return vv
     def meff(hhx,vv):
         (_,mvv,_,lrr) = hhx
         return sset([v for v in vv if len([a for a in np.nditer(lrr[mvv[v]]) if a != 0]) > 1])
@@ -196,6 +208,73 @@ def parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui_2(xmax,omax,bma
         return (topd(bmax//mmax,x0),s0)
     (x1,s1) = buildb(fvars(ff)|vv1,init(fder(ff)),[],0)
     return (topd(bmax//mmax,x1),s1)
+
+# parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui_3 :: 
+#   Integer -> Integer -> Integer -> Integer -> System -> Set.Set Variable -> Fud -> 
+#   HistoryRepa -> HistogramRepaRed -> HistoryRepa -> HistogramRepaRed ->   
+#   ([((Set.Set Variable, (HistogramRepaVec, HistogramRepaVec, UV.Vector Double)),Double)],Integer)
+
+def parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui_3(xmax,omax,bmax,mmax,uu,vv,ff,hh,hhx,hhrr,hhrrx):
+    def sgl(x):
+        return sset([x])
+    def top(amax,ll):
+        ll1 = ll.copy()
+        ll1.sort(key = lambda x: x[0], reverse = True)
+        return ll1[:amax]
+    def topd(amax,ll):
+        return [b for (a,b) in top(amax,ll)]
+    size = historyRepasSize
+    vrrrrv = vectorHistogramRepasHistogramRepaVec_u
+    xind = histogramRepaRedsIndependent
+    def xred(hhx,vv):
+        return setVarsHistogramRepaRedsRed(vv,hhx)
+    reduce = setVarsHistoryRepasReduce
+    cross = parametersSetVarsHistoryRepasSetSetVarsAlignedTop_u
+    append = parametersSetVarsSetSetVarsHistoryRepasSetSetVarsAlignedTop_u
+    rrvffv = histogramRepaVecsFaclnsRepaVecs
+    rrvsum = histogramRepaVecsSum
+    fder = fudsDerived
+    fvars = fudsVars
+    def meff(hhx,vv):
+        (_,mvv,_,lrr) = hhx
+        return sset([v for v in vv if len([a for a in np.nditer(lrr[mvv[v]]) if a != 0]) > 1])
+    z = size(hh)
+    zrr = size(hhrr)
+    f = float(z/zrr)
+    vv1 = meff(hhx,vv)
+    if len(vv1) < 2:
+        return ([],0)
+    def buildb(ww,qq,nn,sn):
+        if len(qq) == 0:
+            return (nn,sn)
+        qq1 = [b for (a,b) in qq]
+        (mm,sm) = append(xmax,omax,ww,qq1,hh,hhx,hhrr,hhrrx)
+        if len(mm) > 0:
+            return buildb(ww,mm,nn+mm,sn+sm) 
+        return (nn,sn)
+    def res(xx):
+        x2 = []
+        for jj in xx:
+            bb = reduce(1,jj,hh)
+            bbrr = reduce(f,jj,hhrr)
+            bbx = xind(z,xred(hhx,jj))
+            bbrrx = xind(z,xred(hhrrx,jj))
+            bbv = vrrrrv(z,[bb,bbx,bbrr,bbrrx])
+            ffv = rrvffv(bbv)
+            ssv = rrvsum(ffv)
+            [a1,_,b1,_] = ssv
+            x2.append(((jj,(bbv,ffv,ssv)),a1-b1))
+        return x2
+    if len(ff) == 0:
+        (xc,sc) = cross(xmax,omax,vv1,hh,hhx,hhrr,hhrrx)
+        (x0,s0) = buildb(vv1,xc,xc,sc)
+        return (res(topd(bmax//mmax,x0)),s0)
+    yy = fvars(ff)|vv1
+    vdd = [sgl(w) for w in fder(ff)]
+    (xa,sa) = append(xmax,omax,yy,vdd,hh,hhx,hhrr,hhrrx)
+    (x1,s1) = buildb(yy,xa,xa,sa)
+    return (res(topd(bmax//mmax,x1)),s1)
+
 
 if not AlignmentForeignPy_ok:
     parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui = parametersSystemsBuilderTupleNoSumlayerMultiEffectiveRepa_ui_2
@@ -417,10 +496,34 @@ def parametersSystemsBuilderDerivedVarsHighestNoSumlayerRepa_ui(wmax,omax,uu,vv,
     append = parametersSetVarsSetSetVarsHistoryRepasSetSetVarsAlignedExcludeHiddenDenseTop_u
     rrvffv = histogramRepaVecsFaclnsRepaVecs
     rrvsum = histogramRepaVecsSum
-    fder = fudsDerived
-    fvars = fudsVars
+    def fder(ff):
+        und = transformsUnderlying
+        vv = set()
+        for (aa,ww) in ff:
+            vv |= ww
+        for tt in ff:
+            vv -= und(tt)
+        return vv
+    def fvars(ff):
+        vars = histogramsSetVar
+        vv = set()
+        for (aa,ww) in ff:
+            vv |= vars(aa)
+        return vv
     def depends(ff,w):
-        return fudsSetVarsDepends(ff,sset([w]))
+        und = transformsUnderlying
+        dd = dict([(v,(xx,ww)) for (xx,ww) in ff for v in ww])
+        yy = set(dd.keys())
+        def deps(uu,xx):
+            ff = []
+            for w in uu & yy - xx:
+                tt = dd[w]
+                ff.append(tt)
+                zz = xx.copy()
+                zz.add(w)
+                ff = ff + deps(und(tt),zz)
+            return ff
+        return deps(set([w]),set())
     yy = fvars(ff) - vv
     if len(yy) == 0:
         return ([],0)
@@ -518,6 +621,75 @@ def parametersSystemsBuilderDerivedVarsHighestNoSumlayerRepa_ui_1(wmax,omax,uu,v
         return (final(nn),s2)
     (x1,s1) = buildd(fvars(ff)-vv,init(fder(ff)),[],0)
     return (maxfst(x1),s1)
+
+# parametersSystemsBuilderDerivedVarsHighestNoSumlayerRepa_ui_2 :: 
+#   Integer -> Integer -> System -> Set.Set Variable -> Fud -> 
+#   HistoryRepa -> HistogramRepaRed -> HistoryRepa -> HistogramRepaRed ->   
+#   ([((Set.Set Variable, HistogramRepa, HistogramRepa), Double)],Integer)
+
+def parametersSystemsBuilderDerivedVarsHighestNoSumlayerRepa_ui_2(wmax,omax,uu,vv,ff,hh,hhx,hhrr,hhrrx):
+    def sgl(x):
+        return sset([x])
+    def top(amax,ll):
+        ll1 = ll.copy()
+        ll1.sort(key = lambda x: x[0], reverse = True)
+        return ll1[:amax]
+    def topd(amax,ll):
+        return [b for (a,b) in top(amax,ll)]
+
+    def maxd(mm):
+        return [x for ((a,_,_),x) in top(1,mm)]
+    vol = systemsSetVarsVolume_u
+    size = historyRepasSize
+    vrrrrv = vectorHistogramRepasHistogramRepaVec_u
+    hvempty = histogramRepaVecEmpty
+    xind = histogramRepaRedsIndependent
+    def xred(hhx,vv):
+        return setVarsHistogramRepaRedsRed(vv,hhx)
+    reduce = setVarsHistoryRepasReduce
+    append = parametersSetVarsSetSetVarsHistoryRepasSetSetVarsAlignedExcludeHiddenDenseTop_u
+    rrvffv = histogramRepaVecsFaclnsRepaVecs
+    rrvsum = histogramRepaVecsSum
+    fder = fudsDerived
+    fvars = fudsVars
+    def depends(ff,w):
+        return fudsSetVarsDepends(ff,sset([w]))
+    yy = fvars(ff) - vv
+    if len(yy) == 0:
+        return ([],0)
+    z = size(hh)
+    zrr = size(hhrr)
+    f = float(z/zrr)    
+    cc = sset([(w,u) for w in (fvars(ff)-vv) for u in (fvars(depends(ff,w))-vv) if u != w])
+    def buildd(ww,qq,nn,sn):
+        if len(qq) == 0:
+            return (nn,sn)
+        qq1 = [b for (a,b) in qq]
+        (mm,sm) = append(wmax,omax,cc,ww,qq1,hh,hhx,hhrr,hhrrx)
+        if len(mm) > 0:
+            return buildd(ww,mm,nn+mm,sn+sm) 
+        return (nn,sn)
+    def res(xx):
+        x2 = []
+        for jj in xx:
+            u = vol(uu,jj)
+            bb = reduce(1,jj,hh)
+            bbrr = reduce(f,jj,hhrr)
+            bbx = xind(z,xred(hhx,jj))
+            bbrrx = xind(z,xred(hhrrx,jj))
+            bbv = vrrrrv(z,[bb,bbx,bbrr,bbrrx])
+            ffv = rrvffv(bbv)
+            ssv = rrvsum(ffv)
+            [a1,a2,b1,b2] = ssv
+            m = len(jj)
+            c = u ** (1.0/m)
+            x2.append(((jj,bb,bbrr),(a1-a2-b1+b2)/c))
+        return x2
+    vdd = [sgl(w) for w in fder(ff)]
+    (xa,sa) = append(wmax,omax,cc,yy,vdd,hh,hhx,hhrr,hhrrx)
+    (x1,s1) = buildd(yy,xa,xa,sa)
+    return (res(maxd(x1)),s1)
+
 
 if not AlignmentForeignPy_ok:
     parametersSystemsBuilderDerivedVarsHighestNoSumlayerRepa_ui = parametersSystemsBuilderDerivedVarsHighestNoSumlayerRepa_ui_1
@@ -992,6 +1164,11 @@ def parametersSystemsBuilderTupleLevelNoSumlayerMultiEffectiveRepa_ui(xmax,omax,
     (x1,s1) = buildb(yy,xa,xa,sa)
     return (res(topd(bmax//mmax,x1)),s1)
 
+# parametersSystemsBuilderTupleLevelNoSumlayerMultiEffectiveRepa_ui_1 :: 
+#   Integer -> Integer -> Integer -> Integer -> System -> Set.Set Variable -> Fud -> Fud -> 
+#   HistoryRepa -> HistogramRepaRed -> HistoryRepa -> HistogramRepaRed ->   
+#   ([((Set.Set Variable, (HistogramRepaVec, HistogramRepaVec, UV.Vector Double)),Double)],Integer)
+
 def parametersSystemsBuilderTupleLevelNoSumlayerMultiEffectiveRepa_ui_1(xmax,omax,bmax,mmax,uu,vvg,ffg,ff,hh,hhx,hhrr,hhrrx):
     def sgl(x):
         return sset([x])
@@ -1156,6 +1333,11 @@ def parametersSystemsBuilderDerivedVarsLevelHighestNoSumlayerRepa_ui(wmax,omax,u
     (xa,sa) = append(wmax,omax,cc,yy,vdd,hh,hhx,hhrr,hhrrx)
     (x1,s1) = buildd(yy,xa,xa,sa)
     return (res(maxd(x1)),s1)
+
+# parametersSystemsBuilderDerivedVarsLevelHighestNoSumlayerRepa_ui_1 :: 
+#   Integer -> Integer -> System -> Set.Set Variable -> Fud -> Fud -> 
+#   HistoryRepa -> HistogramRepaRed -> HistoryRepa -> HistogramRepaRed ->   
+#   ([((Set.Set Variable, HistogramRepa, HistogramRepa), Double)],Integer)
 
 def parametersSystemsBuilderDerivedVarsLevelHighestNoSumlayerRepa_ui_1(wmax,omax,uu,vv,ffg,ff,hh,hhx,hhrr,hhrrx):
     def sgl(x):

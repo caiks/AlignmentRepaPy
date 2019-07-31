@@ -503,6 +503,210 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
         return setStatesHistogramUnit(sset([ss]))
     qqff = setTransformsFud_u
     ffqq = fudsSetTransform
+    def fder(ff):
+        und = transformsUnderlying
+        vv = set()
+        for (aa,ww) in ff:
+            vv |= ww
+        for tt in ff:
+            vv -= und(tt)
+        return vv
+    def fvars(ff):
+        vars = histogramsSetVar
+        vv = set()
+        for (aa,ww) in ff:
+            vv |= vars(aa)
+        return vv
+    def fund(ff):
+        und = transformsUnderlying
+        vv = set()
+        for tt in ff:
+            vv |= und(tt)
+        for (aa,ww) in ff:
+            vv -= ww
+        return vv
+    def funion(ff,gg):
+        return qqff(ffqq(ff) | ffqq(gg))
+    aahh = histogramsHistory
+    hhhr = systemsHistoriesHistoryRepa
+    def vars(hr):
+        return sset(historyRepasVectorVar(hr))
+    size = historyRepasSize
+    rraa = systemsHistogramRepasHistogram
+    hrhx = historyRepasRed
+    def hrhrred(hr,vv):
+        return setVarsHistoryRepasHistoryRepaReduced(vv,hr)
+    def hrred(hr,vv):
+        return setVarsHistoryRepasReduce(1,vv,hr)
+    def reduce(uu,ww,hh):
+        return rraa(uu,hrred(hh,ww))
+    def select(uu,ss,hh):
+        return historyRepasHistoryRepasHistoryRepaSelection_u(hhhr(uu,aahh(unit(ss))),hh)
+    hrconcat = vectorHistoryRepasConcat_u
+    hrshuffle = historyRepasShuffle_u
+    ffqq = fudsSetTransform
+    tttr = systemsTransformsTransformRepa_u
+    def apply(uu,ff,hh):
+        return historyRepasListTransformRepasApply(hh,[tttr(uu,tt) for tt in ffqq(ff)])
+    depends = fudsSetVarsDepends
+    zzdf = treePairStateFudsDecompFud
+    dfzz = decompFudsTreePairStateFud
+    def zztrim(df):
+        pp = []
+        for ll in treesPaths(df):
+            (_,ff) = ll[-1]
+            if len(ff) == 0:
+                pp.append(ll[:-1])
+            else:
+                pp.append(ll)
+        return pathsTree(pp)
+    def okLevel(zzg):
+        for (wmaxg,vvg,ffg) in treesElements(zzg):
+            if wmaxg < 0:
+                return False
+            if not vvg.issubset(vars(aa)):
+                return False
+            if not fvars(ffg).issubset(uvars(uu)):
+                return False
+            if not fund(ffg).issubset(vars(aa)):
+                return False
+        return True
+    def layerer(wmax,uu,vvg,ffg,xx,f,g):
+        decomper_log.info(">>> repa shuffle")
+        stdout.flush()
+        t1 = timer()
+        z = size(xx)
+        xxrr = hrconcat([hrshuffle(xx,seed+i*z) for i in range(1,mult+1)])
+        t2 = timer()
+        decomper_log.info("<<< repa shuffle %.3fs" % (t2-t1))
+        decomper_log.info(">>> repa perimeters")
+        stdout.flush()
+        t1 = timer()
+        vv1 = fder(ffg) | vvg
+        xx1 = hrhrred(apply(uu,ffg,xx),vv1)
+        xxp = hrhx(xx1)
+        xxrr1 = hrhrred(apply(uu,ffg,xxrr),vv1)
+        xxrrp = hrhx(xxrr1)
+        t2 = timer()
+        decomper_log.info("<<< repa perimeters %.3fs" % (t2-t1))
+        return parametersSystemsLayererLevelMaxRollByMExcludedSelfHighestIORepa_u(wmax,lmax,xmax,omax,bmax,mmax,umax,pmax,uu,vvg,ffg,xx1,xxp,xxrr1,xxrrp,f,g)
+    def level(uu,aa,ttg,f,g):
+        (uu0,ff0,g0) = (uu,fudEmpty(),g)
+        for ((wmaxg,vvg,ffg),xxg) in ttg.items():
+            (uuh,ffh,gh) = level(uu0,aa,xxg,f,g0)
+            (uu1,gg,nn) = layerer(wmaxg,uuh,vvg,funion(ffg,ffh),aa,f,gh)
+            (a,kk) = maxd(nn)
+            gg1 = fudEmpty()
+            if a > repaRounding:
+                gg1 = depends(gg,kk)
+            (uu0,ff0,g0) = (uu1,funion(ff0,gg1),gh+1)
+        return (uu0,ff0,g0)
+    def decomp(uu,zz,qq,f):
+        if len(zz) == 0:
+            (uur,ffr,_) = level(uu,aa,zzg,f,1)
+            if len(ffr) == 0:
+                return (uu, decompFudEmpty())
+            decomper_log.info(">>> slicing")
+            stdout.flush()
+            t3 = timer()
+            decomper_log.info("dependent fud cardinality : %d" % len(ffqq(ffr)))
+            aar = apply(uur,ffr,aa)
+            wwr = sset(fder(ffr))
+            aa1 = trim(reduce(uur,wwr,aar))
+            decomper_log.info("derived cardinality : %d" % acard(red(aa1,wwr)))
+            zzr = tsgl((stateEmpty(),ffr))
+            qq[(stateEmpty(),ffr)] = (aar,aa1)
+            (ffr,nnr,kkr) = (None,None,None)
+            t4 = timer()
+            decomper_log.info("<<< slicing %.3fs" % (t4-t3))
+            stdout.flush()
+            return decomp(uur,zzr,qq,f+1)
+        if fmax > 0 and f > fmax:
+            return (uu,zzdf(zztrim(zz)))
+        decomper_log.info(">>> slice selection")
+        stdout.flush()
+        t1 = timer()
+        mm = []
+        for (nn,yy) in treesPlaces(zz):
+            (rr,ff) = nn[-1]
+            if len(ff) > 0:
+                (bb,bb1) = qq[(rr,ff)]
+                tt = dom(treesRoots(yy))
+                for (ss,a) in aall(red(bb1,fder(ff))):
+                    if a > 0 and ss not in tt:
+                        mm.append((a,(nn,ss,bb)))
+        decomper_log.info("slices: %d" % len(mm))
+        if len(mm) == 0:
+            t2 = timer()
+            decomper_log.info("<<< slice selection %.3fs" % (t2-t1))
+            stdout.flush()
+            return (uu,zzdf(zztrim(zz)))
+        mm.sort(key = lambda x: x[0])
+        (a,(nn,ss,bb)) = mm[-1]
+        cc = hrhrred(select(uu,ss,bb),vars(aa))
+        decomper_log.info("decomp path length: %d" % len(nn))
+        decomper_log.info("slice size: %d" % a)
+        t2 = timer()
+        decomper_log.info("<<< slice selection %.3fs" % (t2-t1))
+        stdout.flush()
+        (uuc,ffc,_) = level(uu,cc,zzg,f,1)
+        decomper_log.info(">>> slicing")
+        stdout.flush()
+        t3 = timer()
+        decomper_log.info("dependent fud cardinality : %d" % len(ffqq(ffc)))
+        wwc = sset(fder(ffc))
+        ccc = apply(uuc,ffc,cc)
+        cc1 = trim(reduce(uuc,wwc,ccc))
+        decomper_log.info("derived cardinality : %d" % acard(red(cc1,wwc)))
+        qq[(ss,ffc)] = (ccc,cc1)
+        zzc = pathsTree(treesPaths(zz) + [nn+[(ss,ffc)]])
+        (mm,cc,ffc,nnc,kkc) = (None,None,None,None,None)
+        t4 = timer()
+        decomper_log.info("<<< slicing %.3fs" % (t4-t3))
+        stdout.flush()
+        return decomp(uuc,zzc,qq,f+1)
+    if wmax < 0 or lmax < 0 or xmax < 0 or omax < 0 or bmax < 0 or mmax < 1 or umax < 0 or pmax < 0:
+        return None
+    if size(aa) == 0 or mult < 1:
+        return None
+    if not vars(aa).issubset(uvars(uu)):
+        return None
+    if not okLevel(zzg):
+        return None
+    decomper_log.info(">>> decomper")
+    t1 = timer()
+    x1 = decomp(uu,emptyTree(),sdict(),1)
+    decomper_log.info("nodes: %d" % len(treesNodes(dfzz(x1[1]))))
+    t2 = timer()
+    decomper_log.info("<<< decomper repa %.3fs" % (t2 - t1))
+    stdout.flush()
+    return x1
+
+# parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxIORepa_1 :: 
+#   Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> Integer -> 
+#   Integer -> Integer ->
+#   System -> Tree (Integer, Set.Set Variable, Fud) -> HistoryRepa -> 
+#   IO (Maybe (System, DecompFud))
+
+def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxIORepa_1(wmax,lmax,xmax,omax,bmax,mmax,umax,pmax,fmax,mult,seed,uu,zzg,aa):
+    repaRounding = 1e-6
+    dom = relationsDomain
+    def maxd(mm):
+        if len(mm) > 0:
+            return list(sset([(b,a) for (a,b) in mm]))[-1]
+        return (0,sset())
+    def tsgl(r):
+        return sdict([(r,sdict())])
+    uvars = systemsSetVar
+    acard = histogramsCardinality
+    trim = histogramsTrim
+    aall = histogramsList
+    def red(aa,vv):
+        return setVarsHistogramsReduce(vv,aa)
+    def unit(ss):
+        return setStatesHistogramUnit(sset([ss]))
+    qqff = setTransformsFud_u
+    ffqq = fudsSetTransform
     fvars = fudsVars
     fder = fudsDerived
     fund = fudsUnderlying
@@ -662,4 +866,5 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
     decomper_log.info("<<< decomper repa %.3fs" % (t2 - t1))
     stdout.flush()
     return x1
+
 
