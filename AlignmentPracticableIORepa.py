@@ -546,8 +546,12 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
     hrshuffle = historyRepasShuffle_u
     ffqq = fudsSetTransform
     tttr = systemsTransformsTransformRepa_u
-    def apply(uu,ff,hh):
-        return historyRepasListTransformRepasApply(hh,[tttr(uu,tt) for tt in ffqq(ff)])
+    def ltrsort(uu,ff,hr):
+        vars = historyRepasVectorVar
+        return listVariablesListTransformRepasSort(vars(hr),[tttr(uu,tt) for tt in ffqq(ff)])
+    ltrmul = historyRepasListTransformRepasApply_u
+    def apply(uu,ff,hr):
+        return historyRepasListTransformRepasApply(hr,[tttr(uu,tt) for tt in ffqq(ff)])
     depends = fudsSetVarsDepends
     zzdf = treePairStateFudsDecompFud
     dfzz = decompFudsTreePairStateFud
@@ -583,9 +587,10 @@ def parametersSystemsHistoryRepasDecomperLevelMaxRollByMExcludedSelfHighestFmaxI
         stdout.flush()
         t1 = timer()
         vv1 = fder(ffg) | vvg
-        xx1 = hrhrred(apply(uu,ffg,xx),vv1)
+        frg = ltrsort(uu,ffg,xx)
+        xx1 = hrhrred(ltrmul(xx,frg),vv1)
         xxp = hrhx(xx1)
-        xxrr1 = hrhrred(apply(uu,ffg,xxrr),vv1)
+        xxrr1 = hrhrred(ltrmul(xxrr,frg),vv1)
         xxrrp = hrhx(xxrr1)
         t2 = timer()
         decomper_log.info("<<< repa perimeters %.3fs" % (t2-t1))
