@@ -784,15 +784,46 @@ def historyRepasTransformRepasApply_u(hr,tr):
     (vtt,_,w,d,rtt) = tr
     (_,z) = raa.shape
     pkk = [maa[v] for v in vtt]
+    rbb = rtt[tuple(raa[pkk])]
+    return ([w],sdict([(w,0)]),(d,),np.reshape(rbb,(1,z)))
+
+# historyRepasTransformRepasApply_u_1 :: HistoryRepa -> TransformRepa -> HistoryRepa 
+
+def historyRepasTransformRepasApply_u_1(hr,tr):
+    (_,maa,_,raa) = hr
+    (vtt,_,w,d,rtt) = tr
+    (_,z) = raa.shape
+    pkk = [maa[v] for v in vtt]
     rbb = np.empty(z,dtype=np.dtype(np.int32))
     rat = np.transpose(raa)
     for j in range(0,z):
         rbb[j] = rtt[tuple(rat[j][pkk])]
     return ([w],sdict([(w,0)]),(d,),np.reshape(rbb,(1,z)))
 
+
 # historyRepasListTransformRepasApply_u :: HistoryRepa -> V.Vector TransformRepa -> HistoryRepa 
 
 def historyRepasListTransformRepasApply_u(hr,fr):
+    (vaa,maa,saa,raa) = hr
+    (n,z) = raa.shape
+    m = len(fr)
+    rbb = np.append(raa,np.empty((m,z),dtype=np.dtype(np.int32)),axis=0)
+    vbb = vaa
+    sbb = list(saa)
+    mbb = maa.copy()
+    for (q,tr) in enumerate(fr):
+        (vtt,_,w,d,rtt) = tr
+        vbb = vbb + [w]
+        sbb = sbb + [d]
+        i = n + q
+        mbb[w] = i
+        pkk = [mbb[v] for v in vtt]
+        rbb[i] = rtt[tuple(rbb[pkk])]
+    return (vbb,mbb,tuple(sbb),rbb)
+
+# historyRepasListTransformRepasApply_u_1 :: HistoryRepa -> V.Vector TransformRepa -> HistoryRepa 
+
+def historyRepasListTransformRepasApply_u_1(hr,fr):
     (vaa,maa,saa,raa) = hr
     (n,z) = raa.shape
     m = len(fr)
@@ -810,6 +841,7 @@ def historyRepasListTransformRepasApply_u(hr,fr):
         for j in range(0,z):
             rbt[j,i] = rtt[tuple(rbt[j][pkk])]
     return (vbb,mbb,tuple(sbb),np.transpose(rbt))
+
 
 # listVariablesListTransformRepasSort :: V.Vector Variable -> V.Vector TransformRepa -> V.Vector TransformRepa 
 
