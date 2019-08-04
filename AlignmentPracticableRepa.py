@@ -968,6 +968,39 @@ def parametersBuilderConditionalVarsRepa(kmax,omax,qmax,ll,aa):
         return sdict([(x,y) for (y,x) in list(sset([(b,a) for (a,b) in mm.items()]))[:amax]])
     vars = historyRepasSetVariable
     def red(aa,vv):
+        return setVarsHistoryRepasCountApproxs_u(vv,aa)
+    if kmax < 0 or omax < 0 or qmax < 0:
+        return None
+    z = historyRepasSize(aa)
+    def ent(xx):
+        t = 0
+        for i in xx:
+            a = i/z
+            t += a * log(a)
+        return - t
+    def buildc(qq,nn):
+        pp = sset([kk|sgl(w) for (kk,e) in qq.items() if e > 0 for w in vvk-kk])
+        mm = bot(omax,sdict([(jj,ent(red(aa,ll|jj))-ent(red(aa,jj))) for jj in pp if len(jj) <= kmax]))
+        if len(mm) > 0:
+            nn1 = nn.copy()
+            nn1.update(mm)
+            return buildc(mm,nn1)
+        return nn
+    vvk = vars(aa) - ll
+    rr = bot(omax,sdict([(sgl(w),ent(red(aa,ll|sgl(w)))-ent(red(aa,sgl(w)))) for w in vvk]))
+    return bot(qmax,buildc(rr,rr))
+
+# parametersBuilderConditionalVarsRepa_1 :: 
+#   Integer -> Integer -> Integer -> Set.Set Variable -> HistoryRepa -> 
+#   Maybe (Map.Map (Set.Set Variable) Double)
+
+def parametersBuilderConditionalVarsRepa_1(kmax,omax,qmax,ll,aa):
+    def sgl(x):
+        return sset([x])
+    def bot(amax,mm):
+        return sdict([(x,y) for (y,x) in list(sset([(b,a) for (a,b) in mm.items()]))[:amax]])
+    vars = historyRepasSetVariable
+    def red(aa,vv):
         return setVarsHistoryRepasCountApproxs(vv,aa)
     if kmax < 0 or omax < 0 or qmax < 0:
         return None
@@ -989,6 +1022,7 @@ def parametersBuilderConditionalVarsRepa(kmax,omax,qmax,ll,aa):
     vvk = vars(aa) - ll
     rr = bot(omax,sdict([(sgl(w),ent(red(aa,ll|sgl(w)))-ent(red(aa,sgl(w)))) for w in vvk]))
     return bot(qmax,buildc(rr,rr))
+
 
 # parametersSystemsHistoryRepasDecomperConditionalFmaxRepa :: 
 #   Integer -> Integer -> Integer -> System -> Set.Set Variable -> HistoryRepa -> 

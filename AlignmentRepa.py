@@ -698,6 +698,27 @@ def setVarsHistoryRepasCountApproxs(kk,hr):
         ll[a] = ll.get(a,0) + 1
     return list(ll.values())
 
+# setVarsHistoryRepasCountApproxs_u :: Set.Set Variable -> HistoryRepa -> [Int] 
+
+def setVarsHistoryRepasCountApproxs_u(kk,hr):
+    (vvv,mvv,_,rr) = hr
+    vkk = list(kk)
+    m = len(vkk)
+    (_,z) = rr.shape
+    if m == 0:
+        return [z]
+    pkk = [mvv[v] for v in vkk]
+    rrk = rr[pkk]
+    rrk1 = np.copy(rrk[0])
+    for j in range(1,m):
+        rrk1 *= 23 
+        rrk1 += rrk[j]
+    ll = dict()
+    for a in rrk1.flat:
+        ll[a] = ll.get(a,0) + 1
+    return list(ll.values())
+
+
 # setVarsHistoryRepasCountApproxs_1 :: Set.Set Variable -> HistoryRepa -> [Int] 
 
 def setVarsHistoryRepasCountApproxs_1(kk,hr):
