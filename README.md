@@ -8,7 +8,7 @@ The AlignmentRepaPy repository uses [NumPy](http://www.numpy.org/) high performa
 
 The [Python implementation of fast Practicable Inducers](https://greenlake.co.uk/pages/inducer_python_impl_repa) discusses the implementation of the *inducers* using this repository. 
 
-## Installation
+## Download
 
 The `Alignment` module requires the [Python 3 platform](https://www.python.org/downloads/) to be installed.
 
